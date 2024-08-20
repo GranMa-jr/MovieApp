@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using MovieApp.Service.Services.Abstractions;
 using MovieApp.Service.Services.Concrete;
+using MovieApp.Service.Services.Abstract;
 
 namespace MovieApp.Service.Extensions
 {
@@ -15,6 +16,7 @@ namespace MovieApp.Service.Extensions
             var assembly = Assembly.GetExecutingAssembly();
 
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAutoMapper(cfg => cfg.AddMaps(assembly));

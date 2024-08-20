@@ -9,7 +9,7 @@ namespace MovieApp.Entity.Entities
             
         }
 
-        public Movie(string title, string description, string year, int time, int rate)
+        public Movie(string title, string description, string year, double time, int rate)
         {
             Title = title;
             Description = description;
@@ -20,7 +20,7 @@ namespace MovieApp.Entity.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public string Year { get; set; }
-        public int Time { get; set; }
+        public double Time { get; set; }
         public int Rate { get; set; }
 
         public ICollection<WatchHistory> WatchHistories { get; set; }
