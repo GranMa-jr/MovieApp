@@ -20,12 +20,28 @@ namespace MovieApp.Controllers
         {
             try
             {
-                await _movieService.CreateAsync(movieAddDto);
+                var appUserIdString = (string)HttpContext.Items["unique_name"];
+
+                if (!int.TryParse(appUserIdString, out int appUserId))
+                {
+                    return Unauthorized("Geçersiz kullanıcı kimliği.");
+                }
+
+                await _movieService.CreateAsync(movieAddDto, appUserId);
 
                 return Created();
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Kullanıcı bulunamadı.")
+                {
+                    return NotFound("Kullanıcı bulunamadı.");
+                }
+                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
+                {
+                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
+                }
+
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }
@@ -35,12 +51,27 @@ namespace MovieApp.Controllers
         {
             try
             {
-                var all =  await _movieService.GetAllAsync();
+                var appUserIdString = (string)HttpContext.Items["unique_name"];
+
+                if (!int.TryParse(appUserIdString, out int appUserId))
+                {
+                    return Unauthorized("Geçersiz kullanıcı kimliği.");
+                }
+
+                var all = await _movieService.GetAllAsync(appUserId);
 
                 return Ok(all);
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Kullanıcı bulunamadı.")
+                {
+                    return NotFound("Kullanıcı bulunamadı.");
+                }
+                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
+                {
+                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }
@@ -50,12 +81,27 @@ namespace MovieApp.Controllers
         {
             try
             {
-                await _movieService.UpdateAsync(movieUpdateDto);
+                var appUserIdString = (string)HttpContext.Items["unique_name"];
+
+                if (!int.TryParse(appUserIdString, out int appUserId))
+                {
+                    return Unauthorized("Geçersiz kullanıcı kimliği.");
+                }
+
+                await _movieService.UpdateAsync(movieUpdateDto, appUserId);
 
                 return Ok();
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Kullanıcı bulunamadı.")
+                {
+                    return NotFound("Kullanıcı bulunamadı.");
+                }
+                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
+                {
+                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }
@@ -65,12 +111,26 @@ namespace MovieApp.Controllers
         {
             try
             {
-                await _movieService.DeleteAsync(Id); //
+                var appUserIdString = (string)HttpContext.Items["unique_name"];
+
+                if (!int.TryParse(appUserIdString, out int appUserId))
+                {
+                    return Unauthorized("Geçersiz kullanıcı kimliği.");
+                }
+                await _movieService.DeleteAsync(Id, appUserId); //
 
                 return Ok();
             }
             catch (Exception ex)
             {
+                if (ex.Message == "Kullanıcı bulunamadı.")
+                {
+                    return NotFound("Kullanıcı bulunamadı.");
+                }
+                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
+                {
+                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }

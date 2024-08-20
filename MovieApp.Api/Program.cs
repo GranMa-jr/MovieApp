@@ -5,6 +5,7 @@ using MovieApp.Data.Context;
 using MovieApp.Entity.Entities;
 using MovieApp.Data.Extensions;
 using MovieApp.Service.Extensions;
+using MovieApp.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowCors");
 
 app.UseAuthentication();
+app.UseMultiTenantMiddleware();
 
 app.UseAuthorization();
 
