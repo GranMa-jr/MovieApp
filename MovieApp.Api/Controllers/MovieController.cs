@@ -76,7 +76,7 @@ namespace MovieApp.Controllers
             }
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] MovieUpdateDto movieUpdateDto)
         {
             try
