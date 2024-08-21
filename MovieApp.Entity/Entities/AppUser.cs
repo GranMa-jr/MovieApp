@@ -9,5 +9,6 @@ namespace MovieApp.Entity.Entities
         public string LastName { get; set; }
 
         public ICollection<WatchHistory> WatchHistories { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }

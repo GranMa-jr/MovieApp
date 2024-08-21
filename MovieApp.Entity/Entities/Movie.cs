@@ -24,5 +24,6 @@ namespace MovieApp.Entity.Entities
         public int Rate { get; set; }
 
         public ICollection<WatchHistory> WatchHistories { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }

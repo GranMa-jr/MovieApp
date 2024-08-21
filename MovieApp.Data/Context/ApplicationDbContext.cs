@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.Entity.Entities;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace MovieApp.Data.Context
 {
@@ -18,6 +19,7 @@ namespace MovieApp.Data.Context
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<WatchHistory> WatchHistories { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +35,13 @@ namespace MovieApp.Data.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Review>()
+            .HasOne(r => r.Movie)
+            .WithMany(m => m.Reviews)
+            .HasForeignKey(r => r.MovieId)
+            .OnDelete(DeleteBehavior.Cascade);
+
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }

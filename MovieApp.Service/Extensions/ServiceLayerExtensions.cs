@@ -17,6 +17,7 @@ namespace MovieApp.Service.Extensions
 
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
