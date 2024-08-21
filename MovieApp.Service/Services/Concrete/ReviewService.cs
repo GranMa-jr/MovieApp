@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MovieApp.Data.Context;
 using MovieApp.Data.UnitOfWorks;
 using MovieApp.Entity.Dtos.ReviewDtos;
@@ -40,7 +41,6 @@ namespace MovieApp.Service.Services.Concrete
                 throw new Exception("Kullanıcı bulunamadı.");
             }
 
-            // MovieId'nin geçerli olup olmadığını kontrol edin
             var movieExists = await _unitOfWork.GetRepository<Movie>().AnyAsync(m => m.Id == reviewAddDto.MovieId);
             if (!movieExists)
             {
@@ -51,22 +51,72 @@ namespace MovieApp.Service.Services.Concrete
                 reviewAddDto.Title,
                 reviewAddDto.Description,
                 reviewAddDto.Rate,
-                appUserId,
-                reviewAddDto.MovieId
+                reviewAddDto.MovieId,
+                appUserId
+
             );
 
             await _unitOfWork.GetRepository<Review>().AddAsync(review);
             await _unitOfWork.SaveAsync();
         }
 
-        public Task<List<ReviewDto>> GetAllAsync(int appUserId)
+        public async Task<List<ReviewDto>> GetAllOfFilmAsync(int movieId, int appUserId)
         {
-            throw new NotImplementedException();
+            var currentUser = await _userManager.FindByIdAsync(appUserId.ToString());
+            if (currentUser == null)
+            {
+                throw new Exception("Kullanıcı bulunamadı.");
+            }
+
+            var reviews = await _dbContext.Reviews
+                .Where(x => x.MovieId == movieId)
+                .Include(r => r.AppUser)           
+                .Include(r => r.Movie)             
+                .ToListAsync();
+
+            var reviewDtos = reviews.Select(review => new ReviewDto
+            {
+                Id = review.Id,
+                Title = review.Title,
+                Description = review.Description,
+                Rate = review.Rate,
+                AppUserName = review.AppUser != null ? review.AppUser.UserName : null,
+                MovieName = review.Movie.Title,
+                AppUserId = appUserId,
+                MovieId = movieId
+            }).ToList();
+
+            return reviewDtos;
         }
 
-        public Task<List<ReviewDto>> GetAllByUserAsync(int appUserId)
+
+        public async Task<List<ReviewDto>> GetAllByUserAsync(int appUserId)
         {
-            throw new NotImplementedException();
+            var currentUser = await _userManager.FindByIdAsync(appUserId.ToString());
+            if (currentUser == null)
+            {
+                throw new Exception("Kullanıcı bulunamadı.");
+            }
+
+            var reviews = await _dbContext.Reviews
+                .Where(x => x.MovieId == appUserId)
+                .Include(r => r.AppUser)
+                .Include(r => r.Movie)
+                .ToListAsync();
+
+            var reviewDtos = reviews.Select(review => new ReviewDto
+            {
+                Id = review.Id,
+                Title = review.Title,
+                Description = review.Description,
+                Rate = review.Rate,
+                AppUserName = review.AppUser != null ? review.AppUser.UserName : null,
+                MovieName = review.Movie.Title,
+                AppUserId = appUserId,
+                MovieId = review.Movie.Id
+            }).ToList();
+
+            return reviewDtos;
         }
     }
 }

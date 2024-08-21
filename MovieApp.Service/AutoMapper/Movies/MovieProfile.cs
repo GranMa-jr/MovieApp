@@ -3,9 +3,9 @@ using MovieApp.Entity.Entities;
 
 namespace MovieApp.Service.AutoMapper.Movies
 {
-    public class MovieProfile : Profile
+    public class ReviewProfile : Profile
     {
-        public MovieProfile()
+        public ReviewProfile()
         {
             CreateMap<MovieDto, Movie>().ReverseMap();
             CreateMap<MovieAddDto, Movie>().ReverseMap();

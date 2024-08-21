@@ -43,5 +43,57 @@ namespace MovieApp.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }
+
+        [HttpGet("get-all-of-film/{movieId}")]
+        public async Task<IActionResult> GetAll(int movieId)
+        {
+            try
+            {
+                var appUserIdString = (string)HttpContext.Items["unique_name"];
+
+                if (!int.TryParse(appUserIdString, out int appUserId))
+                {
+                    return Unauthorized("Geçersiz kullanıcı kimliği.");
+                }
+
+                var all = await _reviewService.GetAllOfFilmAsync(movieId, appUserId);
+
+                return Ok(all);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Kullanıcı bulunamadı.")
+                {
+                    return NotFound("Kullanıcı bulunamadı.");
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+            }
+        }
+
+        [HttpGet("get-all-of-film-by-user/{userId}")]
+        public async Task<IActionResult> GetAllUserReviews(int userId)
+        {
+            try
+            {
+                var appUserIdString = (string)HttpContext.Items["unique_name"];
+
+                if (!int.TryParse(appUserIdString, out int appUserId))
+                {
+                    return Unauthorized("Geçersiz kullanıcı kimliği.");
+                }
+
+                var all = await _reviewService.GetAllByUserAsync(appUserId);
+
+                return Ok(all);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Kullanıcı bulunamadı.")
+                {
+                    return NotFound("Kullanıcı bulunamadı.");
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+            }
+        }
     }
 }

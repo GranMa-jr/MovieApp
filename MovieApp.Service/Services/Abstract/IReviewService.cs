@@ -11,7 +11,7 @@ namespace MovieApp.Service.Services.Abstract
     public interface IReviewService
     {
         Task CreateAsync(ReviewAddDto reviewAddDto, int appUserId);
-        Task<List<ReviewDto>> GetAllAsync(int appUserId);
+        Task<List<ReviewDto>> GetAllOfFilmAsync(int movieId,int appUserId);
         Task<List<ReviewDto>> GetAllByUserAsync(int appUserId);
     }
 }
