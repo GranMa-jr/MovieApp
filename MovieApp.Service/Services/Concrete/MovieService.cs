@@ -6,7 +6,7 @@ using MovieApp.Data.Context;
 using MovieApp.Data.UnitOfWorks;
 using MovieApp.Entity.Entities;
 using MovieApp.Service.Extensions;
-using MovieApp.Service.Services.Abstractions;
+using MovieApp.Service.Services.Abstract;
 
 namespace MovieApp.Service.Services.Concrete
 {
@@ -33,12 +33,12 @@ namespace MovieApp.Service.Services.Concrete
 
             if (currentUser == null)
             {
-                throw new Exception("Kullanýcý bulunamadý.");
+                throw new Exception("Kullanï¿½cï¿½ bulunamadï¿½.");
             }
 
             if (!_userManager.IsInRoleAsync(currentUser, "Admin").Result)
             {
-                throw new UnauthorizedAccessException("Bu iþlemi yapmak için yetkiniz yok.");
+                throw new UnauthorizedAccessException("Bu iï¿½lemi yapmak iï¿½in yetkiniz yok.");
             }
 
             Movie movie = new(
@@ -59,12 +59,12 @@ namespace MovieApp.Service.Services.Concrete
 
             if (currentUser == null)
             {
-                throw new Exception("Kullanýcý bulunamadý.");
+                throw new Exception("Kullanï¿½cï¿½ bulunamadï¿½.");
             }
 
             if (!_userManager.IsInRoleAsync(currentUser, "Admin").Result)
             {
-                throw new UnauthorizedAccessException("Bu iþlemi yapmak için yetkiniz yok.");
+                throw new UnauthorizedAccessException("Bu iï¿½lemi yapmak iï¿½in yetkiniz yok.");
             }
 
             var movie = await _unitOfWork.GetRepository<Movie>().GetByGuidAsync(movieId);
@@ -81,7 +81,7 @@ namespace MovieApp.Service.Services.Concrete
 
             if (currentUser == null)
             {
-                throw new Exception("Kullanýcý bulunamadý.");
+                throw new Exception("Kullanï¿½cï¿½ bulunamadï¿½.");
             }
 
             var movies = await _unitOfWork.GetRepository<Movie>().GetAllAsync();
@@ -96,7 +96,7 @@ namespace MovieApp.Service.Services.Concrete
 
             if (currentUser == null)
             {
-                throw new Exception("Kullanýcý bulunamadý.");
+                throw new Exception("Kullanï¿½cï¿½ bulunamadï¿½.");
             }
 
             var movie = await _unitOfWork.GetRepository<Movie>().GetByGuidAsync(id);
@@ -110,12 +110,12 @@ namespace MovieApp.Service.Services.Concrete
 
             if (currentUser == null)
             {
-                throw new Exception("Kullanýcý bulunamadý.");
+                throw new Exception("Kullanï¿½cï¿½ bulunamadï¿½.");
             }
 
             if (!_userManager.IsInRoleAsync(currentUser, "Admin").Result)
             {
-                throw new UnauthorizedAccessException("Bu iþlemi yapmak için yetkiniz yok.");
+                throw new UnauthorizedAccessException("Bu iï¿½lemi yapmak iï¿½in yetkiniz yok.");
             }
 
             var movie = await _unitOfWork.GetRepository<Movie>().GetAsync(x => x.Id == movieUpdateDto.Id);

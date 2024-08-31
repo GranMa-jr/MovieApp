@@ -17,7 +17,7 @@ namespace MovieApp.Api.Controllers
             _reviewService = reviewService;
         }
 
-        [HttpPost("create")]
+        [HttpPost("new")]
         public async Task<IActionResult> Create([FromBody] ReviewAddDto reviewAddDto)
         {
             try
@@ -70,7 +70,7 @@ namespace MovieApp.Api.Controllers
             }
         }
 
-        [HttpGet("get-all-of-film-by-user/{userId}")]
+        [HttpGet("get-by-user")]
         public async Task<IActionResult> GetAllUserReviews(int userId)
         {
             try

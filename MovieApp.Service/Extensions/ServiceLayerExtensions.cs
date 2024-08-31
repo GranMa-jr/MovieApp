@@ -3,7 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using System.Reflection;
-using MovieApp.Service.Services.Abstractions;
+using MovieApp.Service.Services.Abstract;
 using MovieApp.Service.Services.Concrete;
 using MovieApp.Service.Services.Abstract;
 
@@ -19,6 +19,8 @@ namespace MovieApp.Service.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IWatchHistoryService, WatchHistoryService>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAutoMapper(cfg => cfg.AddMaps(assembly));

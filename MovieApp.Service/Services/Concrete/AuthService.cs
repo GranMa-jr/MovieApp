@@ -29,7 +29,7 @@ namespace MovieApp.Service.Services.Concrete
 
         public async Task<IdentityResult> RegisterUserAsync(RegisterDto registerDto)
         {
-            string defaultRoleName = "User";
+            string defaultRoleName = "Admin";
 
             if (!await _roleManager.RoleExistsAsync(defaultRoleName))
             {

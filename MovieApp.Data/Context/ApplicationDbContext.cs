@@ -25,7 +25,7 @@ namespace MovieApp.Data.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("Server=localhost;Database=MovieDb;User=root;Password=Mehmet123*;",
+                optionsBuilder.UseMySql("Server=localhost;Database=MoviesDb;User=root;Password=Ugur123*;",
                     new MySqlServerVersion(new Version(8, 0, 21)));
             }
 

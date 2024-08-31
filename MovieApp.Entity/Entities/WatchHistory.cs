@@ -4,6 +4,15 @@ namespace MovieApp.Entity.Entities
 {
     public class WatchHistory : EntityBase
     {
+        public WatchHistory()
+        {
+
+        }
+        public WatchHistory(int appUserId, int movieId)
+        {
+            AppUserId = appUserId;
+            MovieId = movieId;
+        }
         public int AppUserId { get; set; }
         public AppUser AppUser { get; set; }
 

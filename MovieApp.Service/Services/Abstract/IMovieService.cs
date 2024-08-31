@@ -1,6 +1,6 @@
 using MovieApp.Entity.Entities;
 
-namespace MovieApp.Service.Services.Abstractions
+namespace MovieApp.Service.Services.Abstract
 {
     public interface IMovieService
     {

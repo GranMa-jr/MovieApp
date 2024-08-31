@@ -18,7 +18,7 @@ namespace MovieApp.Api.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("get-account-profile")]
+        [HttpGet("get-profile")]
         public async Task<IActionResult> GetAccountInfoAsync()
         {
             try

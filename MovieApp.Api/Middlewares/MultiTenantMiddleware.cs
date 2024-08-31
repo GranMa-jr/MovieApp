@@ -23,7 +23,7 @@ namespace MovieApp.Api.Middlewares
                 string token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("ecawiasqrpqrgyhwnolrudpbsrwaynbqdayndnmcehjnwqyouikpodzaqxivwkconwqbhrmxfgccbxbyljguwlxhdlcvxlutbnwjlgpfhPgqbegtbxbvwnacyqnltrby"); // JWT token için kullanılacak gizli anahtar
+                var key = Encoding.ASCII.GetBytes("ecawiasqrpqrgyhwnolrudpbsrwaynbqdayndnmcehjnwqyouikpodzaqxivwkconwqbhrmxfgccbxbyljguwlxhdlcvxlutbnwjlgpfhPgqbegtbxbvwnacyqnltrby");
                 try
                 {
                     tokenHandler.ValidateToken(token, new TokenValidationParameters

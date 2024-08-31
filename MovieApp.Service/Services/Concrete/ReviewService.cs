@@ -99,7 +99,7 @@ namespace MovieApp.Service.Services.Concrete
             }
 
             var reviews = await _dbContext.Reviews
-                .Where(x => x.MovieId == appUserId)
+                .Where(x => x.AppUserId == appUserId)
                 .Include(r => r.AppUser)
                 .Include(r => r.Movie)
                 .ToListAsync();

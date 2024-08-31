@@ -1,22 +1,24 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieApp.Entity.Dtos.WatchHistoryDtos;
 using MovieApp.Entity.Entities;
 using MovieApp.Service.Services.Abstract;
 
-namespace MovieApp.Controllers
+namespace MovieApp.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MovieController : ControllerBase
+    public class WatchHistoryController : ControllerBase
     {
-        private readonly IMovieService _movieService;
+        private readonly IWatchHistoryService _watchHistoryService;
 
-        public MovieController(IMovieService movieService)
+        public WatchHistoryController(IWatchHistoryService watchHistoryService)
         {
-            _movieService = movieService;
+            _watchHistoryService = watchHistoryService;
         }
 
         [HttpPost("new")]
-        public async Task<IActionResult> Create([FromBody] MovieAddDto movieAddDto)
+        public async Task<IActionResult> Create([FromBody] WatchHistoryAddDto watchHistoryAddDto)
         {
             try
             {
@@ -27,7 +29,7 @@ namespace MovieApp.Controllers
                     return Unauthorized("Geçersiz kullanıcı kimliği.");
                 }
 
-                await _movieService.CreateAsync(movieAddDto, appUserId);
+                await _watchHistoryService.CreateAsync(watchHistoryAddDto, appUserId);
 
                 return Created();
             }
@@ -37,17 +39,13 @@ namespace MovieApp.Controllers
                 {
                     return NotFound("Kullanıcı bulunamadı.");
                 }
-                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
-                {
-                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
-                }
 
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }
 
-        [HttpGet("get-all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("get-all-of-film-by-user/{userId}")]
+        public async Task<IActionResult> GetAllUserWatchHistories(int userId)
         {
             try
             {
@@ -58,7 +56,7 @@ namespace MovieApp.Controllers
                     return Unauthorized("Geçersiz kullanıcı kimliği.");
                 }
 
-                var all = await _movieService.GetAllAsync(appUserId);
+                var all = await _watchHistoryService.GetAllByUserAsync(appUserId);
 
                 return Ok(all);
             }
@@ -68,45 +66,10 @@ namespace MovieApp.Controllers
                 {
                     return NotFound("Kullanıcı bulunamadı.");
                 }
-                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
-                {
-                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
-                }
                 return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
             }
         }
-
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] MovieUpdateDto movieUpdateDto)
-        {
-            try
-            {
-                var appUserIdString = (string)HttpContext.Items["unique_name"];
-
-                if (!int.TryParse(appUserIdString, out int appUserId))
-                {
-                    return Unauthorized("Geçersiz kullanıcı kimliği.");
-                }
-
-                await _movieService.UpdateAsync(movieUpdateDto, appUserId);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "Kullanıcı bulunamadı.")
-                {
-                    return NotFound("Kullanıcı bulunamadı.");
-                }
-                else if (ex.Message == "Bu işlemi yapmak için yetkiniz yok.")
-                {
-                    return Unauthorized("Bu işlemi yapmak için yetkiniz yok.");
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
-            }
-        }
-
-        [HttpDelete("delete/{Id}")]
+		[HttpDelete("delete/{Id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             try
@@ -117,9 +80,9 @@ namespace MovieApp.Controllers
                 {
                     return Unauthorized("Geçersiz kullanıcı kimliği.");
                 }
-                await _movieService.DeleteAsync(Id, appUserId); //
+                await _watchHistoryService.DeleteAsync(Id, appUserId); //
 
-                return Ok();
+                return Ok(Id);
             }
             catch (Exception ex)
             {
